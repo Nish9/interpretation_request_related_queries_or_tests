@@ -35,15 +35,18 @@ def get_cnv_vcf_paths(samples, study, cohort):
             if uri['uri'].endswith("cnv.vcf.gz"):
                 cnv_vcf_uris.append({
                   "fileType": "VCF_SV_CNV",
-                  "md5Sum": "null",
+                  "md5Sum": None,
                   "sampleId": [sample],
                   "uriFile": uri['uri'].split('//')[1]
                 })
     return cnv_vcf_uris
 
 def add_cnv_vcfs(IR, cnv_vcf_uris):
-    vcfs = IR['vcfs']
-    IR['vcfs'] = vcfs + cnv_vcf_uris
+    vcfs = IR['vcfs']    
+    for cnv_vcf_uri in cnv_vcf_uris:
+        if cnv_vcf_uri not in vcfs:
+            vcfs.append(cnv_vcf_uris)
+    IR['vcfs'] = vcfs
     return IR
 
 
